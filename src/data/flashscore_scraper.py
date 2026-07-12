@@ -194,11 +194,10 @@ def build_report(df: pd.DataFrame, strong: pd.DataFrame) -> str:
         lines.append("No hay candidatos para hoy.")
         return "\n".join(lines)
 
-    lines.append("🎯 TOP CANDIDATOS (favorito >60%)")
-    lines.append("→ Míralos en vivo. Min ~80: si está 0-0, 1-0,")
-    lines.append("  0-1 o 1-1, apuesta UNDER 2.5 o 3.5\n")
+    lines.append("🎯 TODOS LOS CANDIDATOS (favorito >60%)")
+    lines.append("→ Min ~80: si está bajo, apuesta UNDER 2.5/3.5\n")
 
-    for _, m in strong.head(10).iterrows():
+    for i, (_, m) in enumerate(strong.iterrows()):
         h = m["home_team"]
         a = m["away_team"]
         fp = m["favorite_prob"]
@@ -208,14 +207,8 @@ def build_report(df: pd.DataFrame, strong: pd.DataFrame) -> str:
         else:
             fav_odds = m["odds_away"]
             cuota = f"Visita @ {fav_odds:.2f}"
-        lines.append(f"⚽ {h} vs {a}")
-        lines.append(f"   🎯 Gana {cuota} ({fp:.0%} probable)")
-        lines.append(f"   🕐 {m['time']} | {m['league']}")
-        lines.append("")
-
-    rest = len(strong) - 10
-    if rest > 0:
-        lines.append(f"... y {rest} partidos más con favorito claro\n")
+        lines.append(f"{i+1}. {h} vs {a}")
+        lines.append(f"   🎯 Gana {cuota} ({fp:.0%}) | {m['time']} | {m['league']}")
 
     lines.append("⚠️ Apuesta con responsabilidad.")
     return "\n".join(lines)
