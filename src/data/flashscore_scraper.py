@@ -201,14 +201,9 @@ def build_report(df: pd.DataFrame, strong: pd.DataFrame) -> str:
         h = m["home_team"]
         a = m["away_team"]
         fp = m["favorite_prob"]
-        if m["is_home_fav"]:
-            fav_odds = m["odds_home"]
-            cuota = f"Local @ {fav_odds:.2f}"
-        else:
-            fav_odds = m["odds_away"]
-            cuota = f"Visita @ {fav_odds:.2f}"
+        fav_odds = m["odds_home"] if m["is_home_fav"] else m["odds_away"]
         lines.append(f"{i+1}. {h} vs {a}")
-        lines.append(f"   🎯 Gana {cuota} ({fp:.0%}) | {m['time']} | {m['league']}")
+        lines.append(f"   🎯 Gana {m['favorite_team']} @ {fav_odds:.2f} ({fp:.0%}) | {m['time']} | {m['league']}")
 
     lines.append("⚠️ Apuesta con responsabilidad.")
     return "\n".join(lines)
